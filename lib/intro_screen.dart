@@ -16,7 +16,7 @@ class IntroScreen extends StatelessWidget {
 
   ///image path for your slide
   ///[String]
-  final String imageAsset;
+  final Widget mChild;
 
   ///textStyle for your slide
   ///[TextStyle]
@@ -36,8 +36,8 @@ class IntroScreen extends StatelessWidget {
     @required this.description,
     this.headerBgColor = Colors.white,
     this.textStyle,
-    @required this.imageAsset,
-  })  : assert(imageAsset != null),
+    @required this.mChild,
+  })  : assert(mChild != null),
         assert(title != null),
         assert(description != null),
         assert(title != null);
@@ -57,12 +57,7 @@ class IntroScreen extends StatelessWidget {
               color: headerBgColor,
             ),
             child: Center(
-              child: Image.asset(
-                imageAsset,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: screenSize.height * .3,
-              ),
+                child: this.mChild
             ),
           ),
         ],
