@@ -170,192 +170,189 @@ class _IntroScreensState extends State<IntroScreens>
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
-      child: Container(
-        color: Colors.white,
+    return Container(
+      color: Colors.white,
 //        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
-        child: Stack(
-          overflow: Overflow.visible,
-          fit: StackFit.expand,
-          children: <Widget>[
-            PageView.builder(
-                itemCount: widget.slides.length,
-                onPageChanged: (index) {
-                  setState(() {
-                    currentPage = index;
-                    currentScreen = widget.slides[currentPage];
-                    if (currentPage == widget.slides.length - 1) {
-                      lastPage = true;
-                      animationController.forward();
-                    } else {
-                      lastPage = false;
-                      animationController.reverse();
-                    }
-                  });
-                },
-                controller: _controller,
-                physics: BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  if (index == pageOffset.floor()) {
-                    return AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, _) {
-                          return buildPage(
-                            index: index,
-                            angle: pageOffset - index,
-                          );
-                        });
-                  } else if (index == pageOffset.floor() + 1) {
-                    return AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, _) {
-                          return buildPage(
-                            index: index,
-                            angle: pageOffset - index,
-                          );
-                        });
+      width: double.infinity,
+      child: Stack(
+        overflow: Overflow.visible,
+        fit: StackFit.expand,
+        children: <Widget>[
+          PageView.builder(
+              itemCount: widget.slides.length,
+              onPageChanged: (index) {
+                setState(() {
+                  currentPage = index;
+                  currentScreen = widget.slides[currentPage];
+                  if (currentPage == widget.slides.length - 1) {
+                    lastPage = true;
+                    animationController.forward();
+                  } else {
+                    lastPage = false;
+                    animationController.reverse();
                   }
-                  return buildPage(index: index);
-                }),
+                });
+              },
+              controller: _controller,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                if (index == pageOffset.floor()) {
+                  return AnimatedBuilder(
+                      animation: _controller,
+                      builder: (context, _) {
+                        return buildPage(
+                          index: index,
+                          angle: pageOffset - index,
+                        );
+                      });
+                } else if (index == pageOffset.floor() + 1) {
+                  return AnimatedBuilder(
+                      animation: _controller,
+                      builder: (context, _) {
+                        return buildPage(
+                          index: index,
+                          angle: pageOffset - index,
+                        );
+                      });
+                }
+                return buildPage(index: index);
+              }),
 
-            //footer widget
-            Positioned.fill(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              top: MediaQuery.of(context).size.height * .66,
-              child: Container(
-                padding: widget.footerPadding,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(widget.footerRadius.toDouble()),
-                    topLeft: Radius.circular(widget.footerRadius.toDouble()),
-                  ),
-                  color: widget.footerBgColor,
-                  gradient: gradients,
+          //footer widget
+          Positioned.fill(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            top: MediaQuery.of(context).size.height * .66,
+            child: Container(
+              padding: widget.footerPadding,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(widget.footerRadius.toDouble()),
+                  topLeft: Radius.circular(widget.footerRadius.toDouble()),
                 ),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: 24,
+                color: widget.footerBgColor,
+                gradient: gradients,
+              ),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Text(
+                      currentScreen.title,
+                      softWrap: true,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyle?.apply(
+                        color: widget.textColor,
+                        fontWeightDelta: 12,
+                        fontSizeDelta: 10,
                       ),
-                      Text(
-                        currentScreen.title,
-                        softWrap: true,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: textStyle?.apply(
-                          color: widget.textColor,
-                          fontWeightDelta: 12,
-                          fontSizeDelta: 10,
-                        ),
-                        textAlign: TextAlign.center,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Text(
+                      currentScreen.description,
+                      softWrap: true,
+                      style: textStyle?.apply(
+                        color: TinyColor(widget.textColor).darken(8).color,
                       ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Text(
-                        currentScreen.description,
-                        softWrap: true,
-                        style: textStyle?.apply(
-                          color: TinyColor(widget.textColor).darken(8).color,
-                        ),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
                 ),
               ),
             ),
+          ),
 
-            //controls widget
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 18,
-              child: Padding(
-                padding: const EdgeInsets.all(
-                  8.0,
-                ),
-                child: Container(
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      IgnorePointer(
-                        ignoring: lastPage,
-                        child: Opacity(
-                          opacity: lastPage ? 0.0 : 1.0,
-                          child: FlatButton(
-                            child: Text(
-                              widget.skipText.toUpperCase(),
-                              style: textStyle,
-                            ),
-                            onPressed: widget.onSkip,
+          //controls widget
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 18,
+            child: Padding(
+              padding: const EdgeInsets.all(
+                8.0,
+              ),
+              child: Container(
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IgnorePointer(
+                      ignoring: lastPage,
+                      child: Opacity(
+                        opacity: lastPage ? 0.0 : 1.0,
+                        child: FlatButton(
+                          child: Text(
+                            widget.skipText.toUpperCase(),
+                            style: textStyle,
                           ),
+                          onPressed: widget.onSkip,
                         ),
                       ),
-                      Spacer(),
-                      Container(
-                        width: 160,
-                        child: PageIndicator(
-                          type: widget.indicatorType,
-                          currentIndex: currentPage,
-                          activeDotColor: widget.activeDotColor,
-                          inactiveDotColor: widget.inactiveDotColor ??
-                              widget.activeDotColor.withOpacity(.5),
-                          pageCount: widget.slides.length,
-                          onTap: () {
-                            _controller.animateTo(
-                              _controller.page,
-                              duration: Duration(
-                                milliseconds: 400,
-                              ),
-                              curve: Curves.fastOutSlowIn,
-                            );
-                          },
-                        ),
-                      ),
-                      Spacer(),
-                      lastPage
-                          ? FlatButton(
-                        onPressed: widget.onDone,
-                        child: done,
-                      )
-                          : FlatButton(
-                        child: next,
-                        onPressed: () {
-                          _controller.nextPage(
-                              duration: Duration(milliseconds: 800),
-                              curve: Curves.fastOutSlowIn);
+                    ),
+                    Spacer(),
+                    Container(
+                      width: 160,
+                      child: PageIndicator(
+                        type: widget.indicatorType,
+                        currentIndex: currentPage,
+                        activeDotColor: widget.activeDotColor,
+                        inactiveDotColor: widget.inactiveDotColor ??
+                            widget.activeDotColor.withOpacity(.5),
+                        pageCount: widget.slides.length,
+                        onTap: () {
+                          _controller.animateTo(
+                            _controller.page,
+                            duration: Duration(
+                              milliseconds: 400,
+                            ),
+                            curve: Curves.fastOutSlowIn,
+                          );
                         },
                       ),
-                    ],
-                  ),
+                    ),
+                    Spacer(),
+                    lastPage
+                        ? FlatButton(
+                      onPressed: widget.onDone,
+                      child: done,
+                    )
+                        : FlatButton(
+                      child: next,
+                      onPressed: () {
+                        _controller.nextPage(
+                            duration: Duration(milliseconds: 800),
+                            curve: Curves.fastOutSlowIn);
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
+          ),
 
-            //app title
-            Positioned(
-              top: 320,
-              left: 0,
-              right: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Text(
-                  widget.appTitle,
-                  style: textStyle.apply(
-                      fontSizeDelta: 12, fontWeightDelta: 8, color: Colors.red),
-                ),
+          //app title
+          Positioned(
+            top: 320,
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                widget.appTitle,
+                style: textStyle.apply(
+                    fontSizeDelta: 12, fontWeightDelta: 8, color: Colors.red),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
