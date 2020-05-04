@@ -113,8 +113,8 @@ class _IntroScreensState extends State<IntroScreens>
       initialPage: currentPage,
       viewportFraction: widget.viewPortFraction,
     )..addListener(() {
-        pageOffset = _controller.page;
-      });
+      pageOffset = _controller.page;
+    });
 
     currentScreen = widget.slides[0];
 
@@ -124,24 +124,24 @@ class _IntroScreensState extends State<IntroScreens>
 
   TextStyle get textStyle =>
       currentScreen.textStyle ??
-      GoogleFonts.lato(
-          fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal);
+          GoogleFonts.lato(
+              fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal);
 
   Widget get next =>
       this.widget.nextWidget ??
-      Icon(
-        Icons.arrow_forward,
-        size: 28,
-        color: widget.textColor,
-      );
+          Icon(
+            Icons.arrow_forward,
+            size: 28,
+            color: widget.textColor,
+          );
 
   Widget get done =>
       this.widget.doneWidget ??
-      Icon(
-        Icons.check,
-        size: 28,
-        color: widget.textColor,
-      );
+          Icon(
+            Icons.check,
+            size: 28,
+            color: widget.textColor,
+          );
 
   @override
   void dispose() {
@@ -154,15 +154,15 @@ class _IntroScreensState extends State<IntroScreens>
 
   LinearGradient get gradients => existGradientColors
       ? LinearGradient(
-          colors: widget.footerGradients,
-          begin: Alignment.topLeft,
-          end: Alignment.topRight)
+      colors: widget.footerGradients,
+      begin: Alignment.topLeft,
+      end: Alignment.topRight)
       : LinearGradient(
-          colors: [
-            widget.footerBgColor,
-            widget.footerBgColor,
-          ],
-        );
+    colors: [
+      widget.footerBgColor,
+      widget.footerBgColor,
+    ],
+  );
 
   int getCurrentPage() {
     return _controller.page.floor();
@@ -171,14 +171,7 @@ class _IntroScreensState extends State<IntroScreens>
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor:
-            TinyColor(currentScreen?.headerBgColor).setOpacity(.8).color ??
-                Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor:
-            currentScreen?.headerBgColor ?? Colors.transparent,
-      ),
+      value: SystemUiOverlayStyle.dark,
       child: Container(
         color: Colors.white,
 //        height: MediaQuery.of(context).size.height,
@@ -330,17 +323,17 @@ class _IntroScreensState extends State<IntroScreens>
                       Spacer(),
                       lastPage
                           ? FlatButton(
-                              onPressed: widget.onDone,
-                              child: done,
-                            )
+                        onPressed: widget.onDone,
+                        child: done,
+                      )
                           : FlatButton(
-                              child: next,
-                              onPressed: () {
-                                _controller.nextPage(
-                                    duration: Duration(milliseconds: 800),
-                                    curve: Curves.fastOutSlowIn);
-                              },
-                            ),
+                        child: next,
+                        onPressed: () {
+                          _controller.nextPage(
+                              duration: Duration(milliseconds: 800),
+                              curve: Curves.fastOutSlowIn);
+                        },
+                      ),
                     ],
                   ),
                 ),
