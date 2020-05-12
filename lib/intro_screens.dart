@@ -172,7 +172,6 @@ class _IntroScreensState extends State<IntroScreens>
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-//        height: MediaQuery.of(context).size.height,
       width: double.infinity,
       child: Stack(
         overflow: Overflow.visible,
