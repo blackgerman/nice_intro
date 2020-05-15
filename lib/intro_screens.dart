@@ -223,47 +223,50 @@ class _IntroScreensState extends State<IntroScreens>
             left: 0,
             right: 0,
             top: MediaQuery.of(context).size.height * .66,
-            child: Container(
-              padding: widget.footerPadding,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(widget.footerRadius.toDouble()),
-                  topLeft: Radius.circular(widget.footerRadius.toDouble()),
+            child: InkWell(
+              onTap: ()=>_moveToNext(),
+              child: Container(
+                padding: widget.footerPadding,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(widget.footerRadius.toDouble()),
+                    topLeft: Radius.circular(widget.footerRadius.toDouble()),
+                  ),
+                  color: widget.footerBgColor,
+                  gradient: gradients,
                 ),
-                color: widget.footerBgColor,
-                gradient: gradients,
-              ),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Text(
-                      currentScreen.title,
-                      softWrap: true,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textStyle?.apply(
-                        color: widget.textColor,
-                        fontWeightDelta: 12,
-                        fontSizeDelta: 10,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 24,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Text(
-                      currentScreen.description,
-                      softWrap: true,
-                      style: textStyle?.apply(
-                        color: TinyColor(widget.textColor).darken(8).color,
+                      Text(
+                        currentScreen.title,
+                        softWrap: true,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textStyle?.apply(
+                          color: widget.textColor,
+                          fontWeightDelta: 12,
+                          fontSizeDelta: 10,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Text(
+                        currentScreen.description,
+                        softWrap: true,
+                        style: textStyle?.apply(
+                          color: TinyColor(widget.textColor).darken(8).color,
+                        ),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -326,9 +329,7 @@ class _IntroScreensState extends State<IntroScreens>
                         : FlatButton(
                       child: next,
                       onPressed: () {
-                        _controller.nextPage(
-                            duration: Duration(milliseconds: 800),
-                            curve: Curves.fastOutSlowIn);
+                        _moveToNext();
                       },
                     ),
                   ],
@@ -387,5 +388,13 @@ class _IntroScreensState extends State<IntroScreens>
         )
       ],
     );
+  }
+
+  /* move to next slider. */
+  _moveToNext() {
+    lastPage ? widget.onDone() :
+    _controller.nextPage(
+        duration: Duration(milliseconds: 800),
+        curve: Curves.fastOutSlowIn);
   }
 }
