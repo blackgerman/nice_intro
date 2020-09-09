@@ -301,7 +301,7 @@ class _IntroScreensState extends State<IntroScreens>
                     ),
                     Spacer(),
                     Container(
-                      width: 160,
+//                      width: 160,
                       child: PageIndicator(
                         type: widget.indicatorType,
                         currentIndex: currentPage,
